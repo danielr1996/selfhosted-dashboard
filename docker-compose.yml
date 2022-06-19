@@ -1,0 +1,17 @@
+services:
+  backend:
+    image: ghcr.io/danielr1996/bashdoard-backend:latest
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    labels:
+      traefik.enable: true
+      traefik.http.routers.bashdoardapi.rule: Host(`api.dashboard.app.danielr1996.de`)
+      traefik.http.routers.bashdoardapi.tls.certresolver: letsencrypt
+  frontend:
+    image: ghcr.io/danielr1996/bashdoard-frontend:latest
+    environment:
+      API_URL: https://api.dashboard.app.danielr1996.de
+    labels:
+      traefik.enable: true
+      traefik.http.routers.bashdoard.rule: Host(`dashboard.app.danielr1996.de`)
+      traefik.http.routers.bashdoard.tls.certresolver: letsencrypt
